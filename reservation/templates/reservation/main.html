@@ -1,0 +1,22 @@
+{% extends 'reservation/home.html' %}
+{% load my_tags %}
+{% block content %}
+
+<main class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <img src="/media/1.jpeg" class="card-img-top">
+    <p></p>
+
+    <div class="card-body">
+
+        <h1 class="card-title">НеРесторан</h1>
+        <p class="card-text">, расположенный на крыше террасы музея Quai Branly-Жака Ширака - это гармоничное сочетание российской широты души и французкой изысканности, проверенных временем кулинарных традиций и авторского поиска новых вкусовых сочетаний, очаровательной театральности интерьеров и неподдельной любви к хорошей кухне.</p>
+
+        <div class="d-flex gap-2 justify-content-center"> <!-- Используем flexbox и добавляем отступы между кнопками -->
+            <a href="{% url 'reservation:services' %}" class="btn btn-sm btn-outline-secondary">Услуги</a>
+            <a href="{% url 'reservation:contacts' %}" class="btn btn-sm btn-outline-secondary">Контактная информация</a>
+        </div>
+
+    </div>
+</main>
+
+{% endblock %}

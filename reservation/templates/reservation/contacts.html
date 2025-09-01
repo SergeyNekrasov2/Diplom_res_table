@@ -1,0 +1,62 @@
+{% extends 'reservation/home.html' %}
+{% load my_tags %}
+{% block content %}
+
+<main class="px-3">
+    <div class="container">
+    <p></p>
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <label class="btn btn-outline-success" for="success-outlined">
+                    {{ message }}
+                </label>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <p></p>
+
+    <div class="row">
+        <div class="col-6 btn btn-sm btn-outline-secondary">
+            <h4>Контактная информация</h4>
+            <p></p>
+            <div style="width: 18rem;">
+                <p>Адрес: 1, Улица Вкуса, 12345 VibeCity</p>
+                <p>Режим работы: с понедельника по воскресенье: с 11:30 до 22:00</p>
+                <p>Телефон: +21 2 32 14 01 00</p>
+                <p>Сайт: Non-restaurant.com</p>
+                <p>Instagram: @non.rest</p>
+            </div>
+        </div>
+
+        <div class="col-6 btn btn-sm btn-outline-secondary">
+            <h4>Обратная связь</h4>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name">Имя:</label>
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Ваше имя" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone">Телефон:</label>
+                    <input type="text" name="phone" class="form-control" id="phone" placeholder="Контактный телефон" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="message">Сообщение:</label>
+                    <textarea type="text" name="message" class="form-control" id="message" placeholder="Введите сообщение" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-light">Отправить</button>
+            </form>
+        </div>
+    <p></p>
+     <div class="d-flex gap-2 justify-content-center"> <!-- Используем flexbox и добавляем отступы между кнопками -->
+            <a href="{% url 'reservation:main' %}" class="btn btn-sm btn-outline-secondary">Назад</a>
+            <a class="btn btn-sm btn-outline-secondary mb-0" href="{% url 'reservation:about' %}">О ресторане</a>
+     </div>
+    </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'reservation/home.html' %}
+{% load my_tags %}
+{% block content %}
+
+<table>
+    <tr>
+        <th>
+            <div class="col-6 btn btn-sm btn-outline-secondary" style="width: 19rem;">
+                <img src="/media/chef.jpg" class="card-img-top" alt="...">
+            </div>
+        </th>
+        <th>
+            <div class="col-6 btn btn-sm btn-outline-secondary" style="width: 19rem;">
+                <h5 class="card-title">Шеф-повар</h5>
+                <p class="card-text">Alexandre Semperé</p>
+            </div>
+        </th>
+    </tr>
+
+    <tr>
+        <th>
+            <div class="col-6 btn btn-sm btn-outline-secondary" style="width: 19rem;">
+                <img src="/media/somele.jpg" class="card-img-top" alt="...">
+            </div>
+        </th>
+        <th>
+            <div class="col-6 btn btn-sm btn-outline-secondary" style="width: 19rem;">
+                <h5 class="card-title">Сомелье</h5>
+                <p class="card-text">Romain Pernot</p>
+            </div>
+        </th>
+    </tr>
+
+    <tr>
+        <th>
+            <div class="col-6 btn btn-sm btn-outline-secondary" style="width: 19rem;">
+                <img src="/media/team.jpg" class="card-img-top" alt="...">
+            </div>
+        </th>
+        <th>
+            <div class="col-6 btn btn-sm btn-outline-secondary" style="width: 19rem;">
+                <h5 class="card-title">Команда обслуживания</h5>
+                <p class="card-text">Jan and Pol Jumetz, Ioana Plascoru</p>
+            </div>
+        </th>
+    </tr>
+</table>
+<p></p>
+<div class="d-flex gap-2 justify-content-center"> <!-- Используем flexbox и добавляем отступы между кнопками -->
+    <a href="{% url 'reservation:about' %}" class="btn btn-sm btn-outline-secondary">Назад</a>
+    <a href="{% url 'reservation:main' %}" class="btn btn-sm btn-outline-secondary">На главную</a>
+</div>
+
+{% endblock %}

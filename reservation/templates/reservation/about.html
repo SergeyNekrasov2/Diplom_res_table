@@ -1,0 +1,23 @@
+{% extends 'reservation/home.html' %}
+{% load my_tags %}
+{% block content %}
+
+<main class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <img src="/media/1.jpeg" class="card-img-top">
+    <p></p>
+    <div class="card-body">
+
+        <h1 class="card-title">История ресторана</h1>
+        <p class="card-text">Однажды, сидя в кафе с меню в руках, мы вдруг задумались: а что если не нужно выбирать? Что если мы уберем меню вообще и дадим людям просто еду, никто никому не обязан?...</p>
+        <a href="{% url 'reservation:history' %}" class="mt-auto text-white-50" style="font-weight: normal; font-size: 0.90rem;">продолжить чтение...</a>
+        <p></p>
+        <div class="d-flex gap-2 justify-content-center"> <!-- Используем flexbox и добавляем отступы между кнопками -->
+            <a href="{% url 'reservation:mission' %}" class="btn btn-sm btn-outline-secondary">Миссия и ценности</a>
+            <a href="{% url 'reservation:team' %}" class="btn btn-sm btn-outline-secondary">Команда</a>
+            <a href="{% url 'reservation:main' %}" class="btn btn-sm btn-outline-secondary">На главную</a>
+        </div>
+
+    </div>
+</main>
+
+{% endblock %}

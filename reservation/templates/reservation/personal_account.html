@@ -1,0 +1,60 @@
+{% extends 'reservation/home.html' %}
+{% load my_tags %}
+{% block content %}
+
+<div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <label class="btn btn-outline-success" for="success-outlined">{{ message }}</label>
+        {% endfor %}
+    {% endif %}
+    <p></p>
+    <h4>Ваши бронирования</h4>
+    <table border="1" class="table table-dark table-hover table-bordered">
+        <tr>
+            <th>
+                <h6>Дата</h6>
+            </th>
+            <th>
+                <h6>Время</h6>
+            </th>
+            <th>
+                <h6>№ Стола</h6>
+            </th>
+            <th>
+                <h6>Имя</h6>
+            </th>
+            <th>
+                <h6>Редактировать</h6>
+            </th>
+            <th>
+                <h6>Удалить</h6>
+            </th>
+        </tr>
+
+        {% for object in object_list %}
+        <tr>
+            <td>
+                <p>{{object.reserved_at|date:"d.m.Y"}}</p>
+            </td>
+            <td>
+                <p>{{object.reserved_at|date:"H:i"}}</p>
+            </td>
+            <td>
+                <p>{{object.table|truncatechars:5}}</p>
+            </td>
+            <td>
+                <p>{{object.customer_name}}</p>
+            </td>
+            <td>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'reservation:reservation_update' object.pk %}" role="button">Редактировать</a>
+            </td>
+            <td>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'reservation:reservation_delete' object.pk %}" role="button">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+{% endblock %}

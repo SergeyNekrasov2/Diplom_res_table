@@ -1,0 +1,36 @@
+{% extends 'reservation/home.html' %}
+
+{% block content %}
+<img src="/media/1.jpeg" class="card-img-top">
+    <p></p>
+
+<div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <label class="btn btn-outline-success" for="success-outlined">{{ message }}</label>
+        {% endfor %}
+    {% endif %}
+
+    <div class="container">
+        <h5 class="mt-5">Вход в личный кабинет</h5>
+        <form class="row" method="post" enctype="multipart/form-data"style="display: flex; justify-content: center;">
+            <div class="col-9 btn btn-sm btn-outline-secondary">
+                {%  csrf_token %}
+                {{ form.as_p }}
+            </div>
+
+            <p></p>
+
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <p class="d-flex gap-2 justify-content-center">
+                        <button type="submit" class="btn btn-sm btn-outline-secondary mb-0">Вход</button>
+                        <a class="btn btn-sm btn-outline-secondary mb-0" href="{% url 'users:password_reset' %}" role="button">Забыли пароль?</a>
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

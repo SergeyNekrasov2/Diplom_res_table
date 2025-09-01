@@ -1,0 +1,23 @@
+[tool.black]
+
+#максимальная длина строки
+line-length = 119
+
+#список того, что включаем в форматирование
+include = '\.pyi?$'
+
+#список того, что исключаем из форматирования
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
