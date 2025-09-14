@@ -5,7 +5,7 @@ from reservation.views import (AboutView, Contacts, Feedback, MainView,
                                Mission, PersonalAccountListView,
                                ReservationCreateView, ReservationDeleteView,
                                ReservationListView, ReservationUpdateView,
-                               Services, Team, History, home)
+                               Services, Team, History,)
 
 app_name = ReservationConfig.name
 

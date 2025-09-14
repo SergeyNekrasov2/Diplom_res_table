@@ -3,6 +3,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+
 load_dotenv(override=True)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,8 +24,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "reservation",
     "users",
+    "reservation",
     "django.contrib.sites",
 ]
 
@@ -105,8 +106,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
 
-LOGIN_REDIRECT_URL = "reservations:main"
-LOGOUT_REDIRECT_URL = "reservations:main"
+LOGIN_REDIRECT_URL = "reservation:main"
+LOGOUT_REDIRECT_URL = "reservation:main"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")
