@@ -7,7 +7,7 @@ class Command(BaseCommand):
     """Создание суперпользователя."""
 
     def handle(self, *args, **options):
-        user = User.objects.create(email="admin@admin.ru")
+        user = User.objects.create(email="admin01@admin.ru")
         user.set_password("123qwezxc")
         user.is_active = True
         user.is_staff = True
