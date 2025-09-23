@@ -1,9 +1,0 @@
-[tool.isort]
-profile = "black"
-
-#максимальная длина строки
-line-length = 119
-
-
-# игнорировать ошибки
-ignore = E203, W503
