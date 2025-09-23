@@ -6,8 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import (CreateView, DeleteView, ListView,
-                                  TemplateView, UpdateView)
+from django.views.generic import CreateView, DeleteView, ListView, TemplateView, UpdateView
 
 from reservation.forms import ReservationForm
 from reservation.models import Reservation, Restaurant
@@ -29,9 +28,7 @@ class Contacts(TemplateView):
             name = request.POST.get("name")  # получаем имя
             # message = request.POST.get("message")  # получаем сообщение
             # Отправляем сообщение об успешной отправке
-            messages.success(
-                request, f"Спасибо, {name}! Ваше сообщение успешно отправлено."
-            )
+            messages.success(request, f"Спасибо, {name}! Ваше сообщение успешно отправлено.")
             return redirect("reservation:contacts")  # Перенаправляем на ту же страницу
         return render(request, self.template_name)
 
@@ -101,9 +98,7 @@ class ReservationListView(ListView):
             end_time = start_time + timedelta(minutes=60)
 
             # Проверка, есть ли уже бронирования в этом интервале
-            interval_reservation = Reservation.objects.filter(
-                reserved_at__range=(start_time, end_time)
-            ).exclude(
+            interval_reservation = Reservation.objects.filter(reserved_at__range=(start_time, end_time)).exclude(
                 id=reservation.id
             )  # Исключаем текущее бронирование, если оно уже существует
 
@@ -117,9 +112,7 @@ class ReservationListView(ListView):
             # Если все проверки пройдены, сохраняем бронирование
             reservation.save()
             messages.success(request, "Ваше бронирование успешно зарегистрировано!")
-            return redirect(
-                self.success_url
-            )  # Перенаправление на страницу с успешным бронированием
+            return redirect(self.success_url)  # Перенаправление на страницу с успешным бронированием
 
         # Если форма не прошла валидацию, отправляем общее сообщение об ошибке
         messages.error(
@@ -171,9 +164,7 @@ class ReservationUpdateView(UpdateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         """Добавление данных в контекст шаблона."""
         context = super().get_context_data(**kwargs)
-        context["from_personal_account"] = (
-            True  # чтобы было доступно только при режиме редактирования
-        )
+        context["from_personal_account"] = True  # чтобы было доступно только при режиме редактирования
         return context
 
     def form_valid(self, form):
@@ -191,9 +182,7 @@ class ReservationUpdateView(UpdateView, LoginRequiredMixin):
         end_time = start_time + timedelta(minutes=60)
 
         # Проверка, есть ли уже бронирования в этом интервале
-        interval_reservation = Reservation.objects.filter(
-            reserved_at__range=(start_time, end_time)
-        ).exclude(
+        interval_reservation = Reservation.objects.filter(reserved_at__range=(start_time, end_time)).exclude(
             id=reservation.id
         )  # Исключаем текущее бронирование
 
@@ -232,9 +221,7 @@ class PersonalAccountListView(ListView):
         """Набор данных, для отображения в представлении."""
 
         # Фильтруем по владельцу и сортируем по дате и столику
-        queryset = Reservation.objects.filter(owner=self.request.user).order_by(
-            "reserved_at", "table"
-        )
+        queryset = Reservation.objects.filter(owner=self.request.user).order_by("reserved_at", "table")
         return queryset
 
 

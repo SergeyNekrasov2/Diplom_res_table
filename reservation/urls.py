@@ -1,16 +1,26 @@
 from django.urls import path
 
 from reservation.apps import ReservationConfig
-from reservation.views import (AboutView, Contacts, Feedback, MainView,
-                               Mission, PersonalAccountListView,
-                               ReservationCreateView, ReservationDeleteView,
-                               ReservationListView, ReservationUpdateView,
-                               Services, Team, History,)
+from reservation.views import (
+    AboutView,
+    Contacts,
+    Feedback,
+    MainView,
+    Mission,
+    PersonalAccountListView,
+    ReservationCreateView,
+    ReservationDeleteView,
+    ReservationListView,
+    ReservationUpdateView,
+    Services,
+    Team,
+    History,
+)
 
 app_name = ReservationConfig.name
 
 urlpatterns = [
-    #path('', home, name='home'),
+    # path('', home, name='home'),
     path("", MainView.as_view(), name="main"),
     path("contacts/", Contacts.as_view(), name="contacts"),
     path("feedback/", Feedback.as_view(), name="feedback"),
@@ -35,7 +45,5 @@ urlpatterns = [
         ReservationDeleteView.as_view(),
         name="reservation_delete",
     ),
-    path(
-        "personal_account/", PersonalAccountListView.as_view(), name="personal_account"
-    ),
+    path("personal_account/", PersonalAccountListView.as_view(), name="personal_account"),
 ]

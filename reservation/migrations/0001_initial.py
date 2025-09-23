@@ -29,9 +29,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "customer_contact",
-                    models.CharField(
-                        max_length=100, verbose_name="Контактная информация"
-                    ),
+                    models.CharField(max_length=100, verbose_name="Контактная информация"),
                 ),
             ],
             options={
@@ -62,9 +60,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "description",
-                    models.TextField(
-                        help_text="Введите описание", verbose_name="Описание"
-                    ),
+                    models.TextField(help_text="Введите описание", verbose_name="Описание"),
                 ),
                 (
                     "history",
@@ -110,9 +106,7 @@ class Migration(migrations.Migration):
                 ("capacity", models.IntegerField(verbose_name="Вместимость столика")),
                 (
                     "is_available",
-                    models.BooleanField(
-                        default=True, verbose_name="Доступность столика"
-                    ),
+                    models.BooleanField(default=True, verbose_name="Доступность столика"),
                 ),
             ],
         ),

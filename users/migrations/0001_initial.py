@@ -29,9 +29,7 @@ class Migration(migrations.Migration):
                 ("password", models.CharField(max_length=128, verbose_name="password")),
                 (
                     "last_login",
-                    models.DateTimeField(
-                        blank=True, null=True, verbose_name="last login"
-                    ),
+                    models.DateTimeField(blank=True, null=True, verbose_name="last login"),
                 ),
                 (
                     "is_superuser",
@@ -59,23 +57,17 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "date_joined",
-                    models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="date joined"
-                    ),
+                    models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined"),
                 ),
                 (
                     "email",
-                    models.EmailField(
-                        max_length=254, unique=True, verbose_name="Электронная почта"
-                    ),
+                    models.EmailField(max_length=254, unique=True, verbose_name="Электронная почта"),
                 ),
                 ("first_name", models.CharField(max_length=50, verbose_name="Имя")),
                 ("last_name", models.CharField(max_length=50, verbose_name="Фамилия")),
                 (
                     "phone_number",
-                    models.CharField(
-                        blank=True, max_length=35, null=True, verbose_name="Телефон"
-                    ),
+                    models.CharField(blank=True, max_length=35, null=True, verbose_name="Телефон"),
                 ),
                 (
                     "avatar",
@@ -89,9 +81,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "token",
-                    models.CharField(
-                        blank=True, max_length=100, null=True, verbose_name="token"
-                    ),
+                    models.CharField(blank=True, max_length=100, null=True, verbose_name="token"),
                 ),
                 (
                     "groups",
