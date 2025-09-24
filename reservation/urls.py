@@ -36,6 +36,11 @@ urlpatterns = [
         name="reservation_create",
     ),
     path(
+        "reservation/add/",
+        ReservationCreateView.as_view(),
+        name="reservation_add",
+    ),
+    path(
         "reservation/<int:pk>/update/",
         ReservationUpdateView.as_view(),
         name="reservation_update",

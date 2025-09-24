@@ -1,0 +1,33 @@
+{% extends 'reservation/main.html' %}
+{% load my_tags %}
+{% block content %}
+
+<div class="container">
+    <h2>Подтверждение бронирования</h2>
+    <p class="lead"></p>
+    <div class="row mb-2">
+        <div class="col-md-12">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <form class="row" method="post" enctype="multipart/form-data">
+
+                                <p class="btn btn-sm btn-outline-secondary">Вы действительно хотите забронировать столик?</p>
+                                    <div class="card-body">
+                                    {%  csrf_token %}
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary">Подтвердить</button>
+                                                <a class="btn btn-sm btn-outline-secondary" href="{% url 'reservation:reservation_list' %}" role="button">Отменить</a>
+                                        </div>
+                                    </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
