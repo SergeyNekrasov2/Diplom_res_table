@@ -138,7 +138,9 @@
       <nav class="nav nav-masthead justify-content-start float-start">
         <a class="btn btn-sm btn-outline-secondary mb-0" aria-current="page" href="{% url 'reservation:main' %}">Главная</a>
         <a class="btn btn-sm btn-outline-secondary mb-0" href="{% url 'reservation:about' %}">О ресторане</a>
+        {% if user.is_authenticated %}
         <a class="btn btn-sm btn-outline-secondary mb-0" href="{% url 'reservation:reservation_list' %}">Бронирование</a>
+        {% endif %}
       </nav>
 
       <!-- Правая часть навигации -->

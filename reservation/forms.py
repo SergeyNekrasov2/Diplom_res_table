@@ -28,6 +28,7 @@ class ReservationForm(ModelForm):
         model = Reservation
         fields = ["owner", "table", "reserved_at", "customer_name", "customer_contact"]
         widgets = {
+            'owner': forms.HiddenInput(),
             "reserved_at": forms.DateTimeInput(
                 attrs={
                     "class": "form-control",

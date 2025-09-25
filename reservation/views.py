@@ -87,6 +87,8 @@ class ReservationListView(LoginRequiredMixin, PermissionRequiredMixin,ListView):
 
         if form.is_valid():
             reservation = form.save(commit=False)
+            reservation.owner = request.user
+            reservation.save()
 
             # Проверка, находится ли время бронирования в прошлом
             if reservation.reserved_at and reservation.reserved_at < timezone.now():
@@ -98,8 +100,9 @@ class ReservationListView(LoginRequiredMixin, PermissionRequiredMixin,ListView):
 
             # Проверка интервала бронирования (60 минут после)
             reserved_at = reservation.reserved_at
-            start_time = reserved_at
-            end_time = reserved_at + timedelta(minutes=60)
+            start_time = reserved_at - timedelta(minutes=60)
+            end_time = reserved_at
+
 
             # Проверка, есть ли уже бронирования в этом интервале
             interval_reservation = Reservation.objects.filter(reserved_at__range=(start_time, end_time)).exclude(
@@ -158,6 +161,7 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
+
 
 
 class ReservationUpdateView(UpdateView, ):
