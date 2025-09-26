@@ -26,9 +26,8 @@
                     Сохранить
                     {% else %}
                     Создать
-                    {% endif %}
+                    {% endif %}>
                 </button>
-
                 {% if from_personal_account and user.is_authenticated %}
                 <a class="btn btn-sm btn-outline-secondary mb-0" href="{% url 'reservation:personal_account' %}" role="button">Назад</a>
                 {% endif %}

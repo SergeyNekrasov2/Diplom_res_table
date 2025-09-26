@@ -1,13 +1,13 @@
 from datetime import timedelta
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import (CreateView, DeleteView, ListView,
-                                  TemplateView, UpdateView)
+from django.views.generic import CreateView, DeleteView, ListView, TemplateView, UpdateView
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, IsAuthenticated
 
 from reservation.forms import ReservationForm
 from reservation.models import Reservation, Restaurant
@@ -29,9 +29,7 @@ class Contacts(TemplateView):
             name = request.POST.get("name")  # получаем имя
             # message = request.POST.get("message")  # получаем сообщение
             # Отправляем сообщение об успешной отправке
-            messages.success(
-                request, f"Спасибо, {name}! Ваше сообщение успешно отправлено."
-            )
+            messages.success(request, f"Спасибо, {name}! Ваше сообщение успешно отправлено.")
             return redirect("reservation:contacts")  # Перенаправляем на ту же страницу
         return render(request, self.template_name)
 
@@ -42,21 +40,21 @@ class Feedback(TemplateView):
     template_name = "reservation/feedback.html"
 
 
-class MainView(ListView):
+class MainView(TemplateView):
     """Главная страница."""
 
     model = Restaurant
     template_name = "reservation/main.html"
 
 
-class AboutView(ListView):
+class AboutView(TemplateView):
     """Страница о ресторане."""
 
     model = Restaurant
     template_name = "reservation/about.html"
 
 
-class ReservationListView(ListView):
+class ReservationListView(LoginRequiredMixin, PermissionRequiredMixin,ListView):
     """Страница бронирования."""
 
     model = Reservation
@@ -64,6 +62,9 @@ class ReservationListView(ListView):
     context_object_name = "reservation"
     success_url = reverse_lazy("reservation:reservation_list")
     form_class = ReservationForm
+    permission_required = 'reservation.view_reservation'
+    permission_classes = (IsAuthenticatedOrReadOnly, IsAdminUser,)
+
 
     def get_object(self, queryset=None):
         """Получение одного объекта."""
@@ -72,7 +73,7 @@ class ReservationListView(ListView):
         if self.request.user == self.object.owner:
             self.object.save()
             return self.object
-        raise PermissionDenied
+        raise PermissionRequiredMixin
 
     def get_context_data(self, **kwargs):
         """Добавление данных в контекст шаблона."""
@@ -86,6 +87,8 @@ class ReservationListView(ListView):
 
         if form.is_valid():
             reservation = form.save(commit=False)
+            reservation.owner = request.user
+            reservation.save()
 
             # Проверка, находится ли время бронирования в прошлом
             if reservation.reserved_at and reservation.reserved_at < timezone.now():
@@ -97,13 +100,12 @@ class ReservationListView(ListView):
 
             # Проверка интервала бронирования (60 минут после)
             reserved_at = reservation.reserved_at
-            start_time = reserved_at
-            end_time = start_time + timedelta(minutes=60)
+            start_time = reserved_at - timedelta(minutes=60)
+            end_time = reserved_at
+
 
             # Проверка, есть ли уже бронирования в этом интервале
-            interval_reservation = Reservation.objects.filter(
-                reserved_at__range=(start_time, end_time)
-            ).exclude(
+            interval_reservation = Reservation.objects.filter(reserved_at__range=(start_time, end_time)).exclude(
                 id=reservation.id
             )  # Исключаем текущее бронирование, если оно уже существует
 
@@ -117,9 +119,7 @@ class ReservationListView(ListView):
             # Если все проверки пройдены, сохраняем бронирование
             reservation.save()
             messages.success(request, "Ваше бронирование успешно зарегистрировано!")
-            return redirect(
-                self.success_url
-            )  # Перенаправление на страницу с успешным бронированием
+            return redirect(self.success_url)  # Перенаправление на страницу с успешным бронированием
 
         # Если форма не прошла валидацию, отправляем общее сообщение об ошибке
         messages.error(
@@ -142,17 +142,29 @@ class ReservationListView(ListView):
             reserved_at__gte=in_progress_time  # Бронирования, которые в процессе или будут
         ).order_by("table", "reserved_at")
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if self.request.user.groups.filter(name='admin').exists():
+            return qs
+        return qs.filter(owner=self.request.user)
 
-class ReservationCreateView(CreateView):
+class ReservationCreateView(LoginRequiredMixin, CreateView):
     """Страница создания бронирования."""
 
     model = Reservation
     form_class = ReservationForm
     template_name = "reservation/reservation_list.html"
     success_url = reverse_lazy("reservation:reservation_list")
+    permission_classes = (IsAuthenticated, IsAdminUser,)
 
 
-class ReservationUpdateView(UpdateView, LoginRequiredMixin):
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+
+
+class ReservationUpdateView(UpdateView, ):
     """Страница редактирование бронирования."""
 
     model = Reservation
@@ -161,19 +173,18 @@ class ReservationUpdateView(UpdateView, LoginRequiredMixin):
     context_object_name = "reservation"
     success_url = reverse_lazy("reservation:personal_account")
 
+
     def get_object(self, queryset=None):
         """Получение одного объекта."""
         reservation = super().get_object(queryset)
         if self.request.user != reservation.owner:
-            raise PermissionDenied("Вы не можете редактировать это бронирование.")
+            raise PermissionRequiredMixin("Вы не можете редактировать это бронирование.")
         return reservation
 
     def get_context_data(self, **kwargs):
         """Добавление данных в контекст шаблона."""
         context = super().get_context_data(**kwargs)
-        context["from_personal_account"] = (
-            True  # чтобы было доступно только при режиме редактирования
-        )
+        context["from_personal_account"] = True  # чтобы было доступно только при режиме редактирования
         return context
 
     def form_valid(self, form):
@@ -191,9 +202,7 @@ class ReservationUpdateView(UpdateView, LoginRequiredMixin):
         end_time = start_time + timedelta(minutes=60)
 
         # Проверка, есть ли уже бронирования в этом интервале
-        interval_reservation = Reservation.objects.filter(
-            reserved_at__range=(start_time, end_time)
-        ).exclude(
+        interval_reservation = Reservation.objects.filter(reserved_at__range=(start_time, end_time)).exclude(
             id=reservation.id
         )  # Исключаем текущее бронирование
 
@@ -213,13 +222,14 @@ class ReservationDeleteView(DeleteView):
     model = Reservation
     success_url = reverse_lazy("reservation:personal_account")
 
+
     def get_object(self, queryset=None):
         """Получение одного объекта."""
         self.object = super().get_object(queryset)
         if self.request.user == self.object.owner:
             self.object.save()
             return self.object
-        raise PermissionDenied
+        raise PermissionRequiredMixin
 
 
 class PersonalAccountListView(ListView):
@@ -232,9 +242,7 @@ class PersonalAccountListView(ListView):
         """Набор данных, для отображения в представлении."""
 
         # Фильтруем по владельцу и сортируем по дате и столику
-        queryset = Reservation.objects.filter(owner=self.request.user).order_by(
-            "reserved_at", "table"
-        )
+        queryset = Reservation.objects.filter(owner=self.request.user).order_by("reserved_at", "table")
         return queryset
 
 

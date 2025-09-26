@@ -1,7 +1,6 @@
 import secrets
 
-from django.contrib.auth.views import (PasswordResetConfirmView,
-                                       PasswordResetView)
+from django.contrib.auth.views import PasswordResetConfirmView, PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
@@ -9,8 +8,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView
 
 from config.settings import EMAIL_HOST_USER
-from users.forms import (UserForgotPasswordForm, UserRegisterForm,
-                         UserSetNewPasswordForm)
+from users.forms import UserForgotPasswordForm, UserRegisterForm, UserSetNewPasswordForm
 from users.models import User
 
 
@@ -67,9 +65,7 @@ class UserPasswordResetConfirmView(SuccessMessageMixin, PasswordResetConfirmView
     form_class = UserSetNewPasswordForm
     template_name = "users/user_password_set_new.html"
     success_url = reverse_lazy("users:login")
-    success_message = (
-        "Пароль успешно изменен. Теперь Вы можете авторизоваться на сайте."
-    )
+    success_message = "Пароль успешно изменен. Теперь Вы можете авторизоваться на сайте."
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

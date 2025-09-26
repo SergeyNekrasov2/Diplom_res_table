@@ -8,12 +8,8 @@ NULLABLE = {"blank": True, "null": True}
 class Restaurant(models.Model):
     """Модель ресторана."""
 
-    name = models.CharField(
-        max_length=20, verbose_name="Название", help_text="Введите название"
-    )
-    description = models.TextField(
-        verbose_name="Описание", help_text="Введите описание"
-    )
+    name = models.CharField(max_length=20, verbose_name="Название", help_text="Введите название")
+    description = models.TextField(verbose_name="Описание", help_text="Введите описание")
     history = models.TextField(
         verbose_name="История ресторана",
         help_text="Введите описание истории",
@@ -66,8 +62,7 @@ class Table(models.Model):
 class Reservation(models.Model):
     """Модель бронирования."""
 
-    table = models.ForeignKey(
-        Table, on_delete=models.CASCADE, verbose_name="Номер столика")
+    table = models.ForeignKey(Table, on_delete=models.CASCADE, verbose_name="Номер столика")
     reserved_at = models.DateTimeField(verbose_name="Дата бронирования")
     customer_name = models.CharField(max_length=100, verbose_name="Имя клиента")
     customer_contact = models.CharField(max_length=100, verbose_name="Контактная информация")

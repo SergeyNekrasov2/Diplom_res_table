@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "diplom-res-table"
+version = "0.1.0"
+description = "Дипломная работа"
+authors = ["Sergey <nekrasov-nekras-nekrasov@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.flake8]
+max-line-length = 119
+ignore = "E501,I101,D100,D101,D102,D103,D104,D105,D107,D401,E203,I900,N802,N806,N812,W503,S311,S605,S607,ISC003,ISC001,T101,T000,F541,PL123,"
+exclude = [
+    ".git",
+    "__pycache__",
+    "migrations",
+    ".venv",
+    "tests",
+    "docs/source/conf.py",
+    "build",
+    "dist",
+    ".tox",
+    ".eggs",
+    "*.egg"
+]
+
+[tool.black]
+line-length = 119
+include = '\.pyi?$'
+
+[tool.isort]
+#максимальная длина строки
+line-length = 119
+# игнорировать ошибки
+ignore = "E203, W503"
