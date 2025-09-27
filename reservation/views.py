@@ -54,7 +54,7 @@ class AboutView(TemplateView):
     template_name = "reservation/about.html"
 
 
-class ReservationListView(LoginRequiredMixin, PermissionRequiredMixin,ListView):
+class ReservationListView(LoginRequiredMixin,ListView):
     """Страница бронирования."""
 
     model = Reservation
@@ -62,8 +62,6 @@ class ReservationListView(LoginRequiredMixin, PermissionRequiredMixin,ListView):
     context_object_name = "reservation"
     success_url = reverse_lazy("reservation:reservation_list")
     form_class = ReservationForm
-    permission_required = 'reservation.view_reservation'
-    permission_classes = (IsAuthenticatedOrReadOnly, IsAdminUser,)
 
 
     def get_object(self, queryset=None):
@@ -129,20 +127,6 @@ class ReservationListView(LoginRequiredMixin, PermissionRequiredMixin,ListView):
         return self.get(request, *args, **kwargs)  # Возврат на ту же страницу
 
     def get_queryset(self):
-        """Набор данных, для отображения в представлении."""
-
-        # Определяем текущее время
-        now = timezone.now()
-
-        # Вычисляем время, до которого бронирования считаются "в процессе"
-        in_progress_time = now - timedelta(minutes=60)
-
-        # Фильтруем и сортируем бронирования
-        return Reservation.objects.filter(
-            reserved_at__gte=in_progress_time  # Бронирования, которые в процессе или будут
-        ).order_by("table", "reserved_at")
-
-    def get_queryset(self):
         qs = super().get_queryset()
         if self.request.user.groups.filter(name='admin').exists():
             return qs
@@ -155,7 +139,6 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
     form_class = ReservationForm
     template_name = "reservation/reservation_list.html"
     success_url = reverse_lazy("reservation:reservation_list")
-    permission_classes = (IsAuthenticated, IsAdminUser,)
 
 
     def form_valid(self, form):
